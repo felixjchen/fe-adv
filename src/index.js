@@ -19,7 +19,7 @@ const functions = app.functions();
 const auth = app.auth();
 const authui = new firebaseui.auth.AuthUI(auth);
 
-functions.useEmulator("localhost", "5001");
+// functions.useEmulator("localhost", "5001");
 
 console.log({ app, auth, authui, functions });
 const uiConfig = {
