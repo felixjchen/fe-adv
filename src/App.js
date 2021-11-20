@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 const PlayerContext = React.createContext(() => {});
 
@@ -15,6 +16,14 @@ const Game = (props) => {
   let [available_colors, set_available_colors] = React.useState(
     props.db_available_colors
   );
+  let [profile_photo_url, set_profile_photo_url] = React.useState(
+    props.profile_photo_url
+  );
+
+  const upload_profile_photo = async (file) => {
+    const new_profile_photo_url = await props.uploadProfilePhoto(file);
+    set_profile_photo_url(new_profile_photo_url);
+  };
 
   const select_color = (player, color) => {
     console.log(`${player} choose ${color}`);
@@ -35,6 +44,8 @@ const Game = (props) => {
     set_selected_colors(new_selected_colors);
   };
 
+  console.log(profile_photo_url);
+
   return (
     <>
       <PlayerContext.Provider
@@ -44,9 +55,31 @@ const Game = (props) => {
           selected_colors: selected_colors,
         }}
       >
+        <Button
+          variant="contained"
+          onClick={props.signOut}
+          style={{ float: "right" }}
+        >
+          Sign Out
+        </Button>
+
         <Container fixed>
           <Box>
-            <h1>Game </h1>
+            <h1>Welcome {props.user_email} </h1>
+
+            <Container fixed>
+              <Stack style={{ maxWidth: "10rem", margin: "auto" }}>
+                <img src={profile_photo_url}></img>
+                <Button variant="contained" component="label">
+                  Upload Profile File
+                  <input
+                    type="file"
+                    onChange={(e) => upload_profile_photo(e.target.files[0])}
+                    hidden
+                  />
+                </Button>
+              </Stack>
+            </Container>
           </Box>
           <Grid
             container
