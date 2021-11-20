@@ -7,22 +7,14 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 
 const PlayerContext = React.createContext(() => {});
-const COLORS = {
-  blue: true,
-  red: true,
-  yellow: true,
-  orange: true,
-  purple: true,
-  grey: true,
-  green: true,
-};
 
-export default function BasicExample() {
-  return <Game />;
-}
-const Game = () => {
-  let [selected_colors, set_selected_colors] = React.useState({});
-  let [available_colors, set_available_colors] = React.useState(COLORS);
+const Game = (props) => {
+  let [selected_colors, set_selected_colors] = React.useState(
+    props.db_selected_colors
+  );
+  let [available_colors, set_available_colors] = React.useState(
+    props.db_available_colors
+  );
 
   const select_color = (player, color) => {
     console.log(`${player} choose ${color}`);
@@ -39,6 +31,7 @@ const Game = () => {
     new_selected_colors[player] = color;
 
     set_available_colors(new_available_colors);
+    props.setSelectedColorsDB({ selected_colors: new_selected_colors });
     set_selected_colors(new_selected_colors);
   };
 
@@ -102,7 +95,7 @@ const Player = (props) => {
 
   const options = [];
 
-  // First , add selected color
+  // First, add selected color
   let selected_color = "choose color";
   if (props.player_name in selected_colors) {
     selected_color = selected_colors[props.player_name];
@@ -132,10 +125,12 @@ const Player = (props) => {
       <h4>{props.player_name}</h4>
       <hr></hr>
       <Stack>
-        <Select onChange={select_color} defaultValue={"choose color"}>
+        <Select onChange={select_color} value={selected_color}>
           {options}
         </Select>
       </Stack>
     </Container>
   );
 };
+
+export default Game;
