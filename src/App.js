@@ -1,7 +1,7 @@
 import React from "react";
 
 const PlayerContext = React.createContext(() => {});
-const Colors = {
+const COLORS = {
   blue: true,
   red: true,
   yellow: true,
@@ -14,57 +14,65 @@ const Colors = {
 export default function BasicExample() {
   return <Game />;
 }
+const Game = () => {
+  let [selected_colors, set_selected_colors] = React.useState({});
+  let [available_colors, set_available_colors] = React.useState(COLORS);
 
-class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { selected_colors: {}, available_colors: Colors };
-  }
-
-  select_color = (player, color) => {
+  const select_color = (player, color) => {
     console.log(`${player} choose ${color}`);
-    let new_state = this.state;
+    const new_selected_colors = { ...selected_colors };
+    const new_available_colors = { ...available_colors };
 
     // free old color
-    if (player in new_state.selected_colors) {
-      const old_color = new_state.selected_colors[player];
-      new_state.available_colors[old_color] = true;
+    if (player in new_selected_colors) {
+      const old_color = new_selected_colors[player];
+      new_available_colors[old_color] = true;
     }
     // take new color
-    new_state.available_colors[color] = false;
-    new_state.selected_colors[player] = color;
+    new_available_colors[color] = false;
+    new_selected_colors[player] = color;
 
-    this.setState(new_state);
-    console.log(this.state);
+    set_available_colors(new_available_colors);
+    set_selected_colors(new_selected_colors);
   };
 
-  render() {
-    return (
-      <div>
-        <h1 id="title">Game </h1>
+  return (
+    <div>
+      <h1 id="title">Game </h1>
 
-        <PlayerContext.Provider
-          value={{
-            game_select_color: this.select_color,
-            available_colors: this.state.available_colors,
-            selected_colors: this.state.selected_colors,
-          }}
-        >
-          <div id="player_grid">
-            <div>
-              <Player player_name="player_1"></Player>
-              <Player player_name="player_2"></Player>
-            </div>
-            <div>
-              <Player player_name="player_3"></Player>
-              <Player player_name="player_4"></Player>
-            </div>
+      <PlayerContext.Provider
+        value={{
+          game_select_color: select_color,
+          available_colors: available_colors,
+          selected_colors: selected_colors,
+        }}
+      >
+        <div id="player_grid">
+          <div>
+            <Player
+              player_name="player_1"
+              selected_colors={selected_colors}
+            ></Player>
+            <Player
+              player_name="player_2"
+              selected_colors={selected_colors}
+            ></Player>
           </div>
-        </PlayerContext.Provider>
-      </div>
-    );
-  }
-}
+          <div>
+            <Player
+              player_name="player_3"
+              selected_colors={selected_colors}
+            ></Player>
+            <Player
+              player_name="player_4"
+              selected_colors={selected_colors}
+            ></Player>
+          </div>
+        </div>
+      </PlayerContext.Provider>
+    </div>
+  );
+};
 
 const Player = (props) => {
   const { game_select_color, available_colors, selected_colors } =
