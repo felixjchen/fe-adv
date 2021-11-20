@@ -12,21 +12,10 @@ code {
     monospace;
 }
 
-#player_grid {
-  display: flex;
-  justify-content: space-around;
-}
-
-h4,
-h1 {
+h1,
+h4 {
   text-align: center;
 }
-
-hr {
-  width: 100%;
-  border: 1px solid black;
-}
-
 .player {
   margin-top: 1rem;
 
@@ -34,10 +23,6 @@ hr {
   flex-direction: column;
 
   border: 1px solid black;
-  width: 10rem;
-  height: 8rem;
-}
-
-.player > select {
-  margin: auto;
+  width: 16rem;
+  height: 12rem;
 }
