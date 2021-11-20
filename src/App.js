@@ -1,4 +1,15 @@
 import React from "react";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
+
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 const PlayerContext = React.createContext(() => {});
 const COLORS = {
@@ -37,9 +48,7 @@ const Game = () => {
   };
 
   return (
-    <div>
-      <h1 id="title">Game </h1>
-
+    <>
       <PlayerContext.Provider
         value={{
           game_select_color: select_color,
@@ -47,30 +56,43 @@ const Game = () => {
           selected_colors: selected_colors,
         }}
       >
-        <div id="player_grid">
-          <div>
-            <Player
-              player_name="player_1"
-              selected_colors={selected_colors}
-            ></Player>
-            <Player
-              player_name="player_2"
-              selected_colors={selected_colors}
-            ></Player>
-          </div>
-          <div>
-            <Player
-              player_name="player_3"
-              selected_colors={selected_colors}
-            ></Player>
-            <Player
-              player_name="player_4"
-              selected_colors={selected_colors}
-            ></Player>
-          </div>
-        </div>
+        <Container fixed>
+          <Box>
+            <h1>Game </h1>
+          </Box>
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          >
+            <Grid item xs={6}>
+              <Player
+                player_name="player_1"
+                selected_colors={selected_colors}
+              ></Player>
+            </Grid>
+            <Grid item xs={6}>
+              <Player
+                player_name="player_2"
+                selected_colors={selected_colors}
+              ></Player>
+            </Grid>
+            <Grid item xs={6}>
+              <Player
+                player_name="player_3"
+                selected_colors={selected_colors}
+              ></Player>
+            </Grid>
+            <Grid item xs={6}>
+              <Player
+                player_name="player_4"
+                selected_colors={selected_colors}
+              ></Player>
+            </Grid>
+          </Grid>
+        </Container>
       </PlayerContext.Provider>
-    </div>
+    </>
   );
 };
 
@@ -91,18 +113,18 @@ const Player = (props) => {
     selected_color = selected_colors[props.player_name];
   }
   options.push(
-    <option key={selected_color} value={selected_color}>
+    <MenuItem key={selected_color} value={selected_color}>
       {selected_color}
-    </option>
+    </MenuItem>
   );
 
   // Add all availble colors to dropdown
   for (let color in available_colors) {
     if (available_colors[color]) {
       options.push(
-        <option key={color} value={color}>
+        <MenuItem key={color} value={color}>
           {color}
-        </option>
+        </MenuItem>
       );
     }
   }
@@ -111,10 +133,14 @@ const Player = (props) => {
     backgroundColor: selected_color,
   };
   return (
-    <div style={style} className="player">
+    <Container fixed style={style} className="player">
       <h4>{props.player_name}</h4>
       <hr></hr>
-      <select onChange={select_color}>{options}</select>
-    </div>
+      <Stack>
+        <Select onChange={select_color} defaultValue={"choose color"}>
+          {options}
+        </Select>
+      </Stack>
+    </Container>
   );
 };
