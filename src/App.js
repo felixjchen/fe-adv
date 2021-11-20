@@ -77,6 +77,7 @@ const Player = (props) => {
 
   const options = [];
 
+  // First , add selected color
   let selected_color = "choose color";
   if (props.player_name in selected_colors) {
     selected_color = selected_colors[props.player_name];
@@ -87,6 +88,7 @@ const Player = (props) => {
     </option>
   );
 
+  // Add all availble colors to dropdown
   for (let color in available_colors) {
     if (available_colors[color]) {
       options.push(
