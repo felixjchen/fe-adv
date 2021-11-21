@@ -1,9 +1,9 @@
-import IndexContext from "../contexts/IndexContext";
+import { RootContext } from "../contexts/RootContext";
 import React, { useContext, useState } from "react";
 import { Box, Container, Stack, Button } from "@mui/material";
 
 const Index = () => {
-  let index_context = useContext(IndexContext);
+  let index_context = useContext(RootContext);
 
   let [profile_photo_url, set_profile_photo_url] = useState(
     index_context.profile_photo_url

@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
-import { Grid, Button, Container } from "@mui/material";
+import { Grid, Container } from "@mui/material";
 import Player from "./PlayerComponent";
-import PlayerContext from "../contexts/PlayerContext";
-import IndexContext from "../contexts/IndexContext";
+import { RootContext } from "../contexts/RootContext";
 
 const Game = () => {
-  let index_context = useContext(IndexContext);
+  let index_context = useContext(RootContext);
 
   let [selected_colors, set_selected_colors] = useState(
     index_context.db_selected_colors
@@ -31,48 +30,30 @@ const Game = () => {
     set_selected_colors(new_selected_colors);
   };
 
+  const player_props = {
+    select_color,
+    available_colors,
+    selected_colors,
+  };
+
   return (
     <>
-      <PlayerContext.Provider
-        value={{
-          select_color,
-          available_colors,
-          selected_colors,
-        }}
-      >
-        <Container fixed>
-          <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          >
-            <Grid item xs={6}>
-              <Player
-                player_name="player_1"
-                selected_colors={selected_colors}
-              ></Player>
-            </Grid>
-            <Grid item xs={6}>
-              <Player
-                player_name="player_2"
-                selected_colors={selected_colors}
-              ></Player>
-            </Grid>
-            <Grid item xs={6}>
-              <Player
-                player_name="player_3"
-                selected_colors={selected_colors}
-              ></Player>
-            </Grid>
-            <Grid item xs={6}>
-              <Player
-                player_name="player_4"
-                selected_colors={selected_colors}
-              ></Player>
-            </Grid>
+      <Container fixed>
+        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+          <Grid item xs={6}>
+            <Player player_name="player_1" {...player_props}></Player>
           </Grid>
-        </Container>
-      </PlayerContext.Provider>
+          <Grid item xs={6}>
+            <Player player_name="player_2" {...player_props}></Player>
+          </Grid>
+          <Grid item xs={6}>
+            <Player player_name="player_3" {...player_props}></Player>
+          </Grid>
+          <Grid item xs={6}>
+            <Player player_name="player_4" {...player_props}></Player>
+          </Grid>
+        </Grid>
+      </Container>
     </>
   );
 };

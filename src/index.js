@@ -11,10 +11,8 @@ import {
   auth,
   authui,
 } from "./firebase";
-import IndexContext from "./contexts/IndexContext";
-import MyRoutes from "./routes/routes";
-import { BrowserRouter, Link, Outlet } from "react-router-dom";
-import { Button } from "@mui/material";
+import { RootContextProvider } from "./contexts/RootContext";
+import Root from "./components/RootComponent";
 
 const render_game = async (user) => {
   const db_selected_colors = (await getSelectedColorsDB()).data;
@@ -57,7 +55,7 @@ const render_game = async (user) => {
     console.log(err);
   }
 
-  const IndexContextValue = {
+  const RootContextValue = {
     db_selected_colors,
     db_available_colors,
     profile_photo_url,
@@ -67,31 +65,10 @@ const render_game = async (user) => {
     uploadProfilePhoto,
   };
   ReactDOM.render(
-    <React.StrictMode>
-      <IndexContext.Provider value={IndexContextValue}>
-        <BrowserRouter>
-          <nav
-            style={{
-              borderBottom: "solid 1px",
-              paddingBottom: "1rem",
-            }}
-          >
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-            <Link to="/game">Game</Link>
-            <Button
-              variant="contained"
-              onClick={signOut}
-              style={{ float: "right" }}
-            >
-              Sign Out
-            </Button>
-          </nav>
-          <Outlet />
-          <MyRoutes></MyRoutes>
-        </BrowserRouter>
-      </IndexContext.Provider>
-    </React.StrictMode>,
+    <RootContextProvider
+      value={RootContextValue}
+      children={<Root></Root>}
+    ></RootContextProvider>,
     document.getElementById("root")
   );
 };
