@@ -2,7 +2,7 @@ import Game from "../components/GameComponent";
 import Index from "../components/IndexComponent";
 import About from "../components/AboutComponent";
 import { Routes, Route } from "react-router-dom";
-import { React } from "react";
+import React from "react";
 
 const MyRoutes = () => (
   <Routes>

@@ -1,5 +1,5 @@
 import IndexContext from "../contexts/IndexContext";
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Container, Stack, Button } from "@mui/material";
 
 const Index = () => {

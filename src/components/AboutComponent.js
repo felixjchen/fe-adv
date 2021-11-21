@@ -1,5 +1,5 @@
 import IndexContext from "../contexts/IndexContext";
-import { useContext } from "react";
+import React, { useContext } from "react";
 
 const About = (props) => {
   let index_context = useContext(IndexContext);

@@ -1,4 +1,4 @@
-import { React, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Grid, Button, Container } from "@mui/material";
 import Player from "./PlayerComponent";
 import PlayerContext from "../contexts/PlayerContext";
