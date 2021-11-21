@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "@mui/material/Container";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
+import { RootContext } from "../contexts/RootContext";
 
 const Player = (props) => {
-  const { select_color, available_colors, selected_colors } = props;
+  const { select_color, available_colors, selected_colors } =
+    useContext(RootContext);
 
   const select_color_onclick = (event) => {
     const color = event.target.value;

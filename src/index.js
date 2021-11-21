@@ -11,7 +11,6 @@ import {
   auth,
   authui,
 } from "./firebase";
-import { RootContextProvider } from "./contexts/RootContext";
 import Root from "./components/RootComponent";
 
 const render_game = async (user) => {
@@ -55,7 +54,7 @@ const render_game = async (user) => {
     console.log(err);
   }
 
-  const RootContextValue = {
+  const root_props = {
     db_selected_colors,
     db_available_colors,
     profile_photo_url,
@@ -65,10 +64,7 @@ const render_game = async (user) => {
     uploadProfilePhoto,
   };
   ReactDOM.render(
-    <RootContextProvider
-      value={RootContextValue}
-      children={<Root></Root>}
-    ></RootContextProvider>,
+    <Root {...root_props}></Root>,
     document.getElementById("root")
   );
 };
