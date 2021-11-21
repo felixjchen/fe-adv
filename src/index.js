@@ -1,52 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import Game from "./components/GameComponent";
 import reportWebVitals from "./reportWebVitals";
-
-import firebaseConfig from "./config";
-
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/functions";
-import "firebase/compat/storage";
-import * as firebaseui from "firebaseui";
-import "firebaseui/dist/firebaseui.css";
-
-// https://github.com/firebase/firebaseui-web/pull/850
-const app = firebase.initializeApp(firebaseConfig);
-const functions = app.functions();
-const auth = app.auth();
-const authui = new firebaseui.auth.AuthUI(auth);
-
-// functions.useEmulator("localhost", "5001");
-
-console.log({ app, auth, authui, functions });
-const uiConfig = {
-  signInSuccessUrl: "/",
-  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
-  tosUrl: "/",
-  privacyPolicyUrl: function () {
-    window.location.assign("/");
-  },
-};
-
-const getSelectedColorsDB = functions.httpsCallable("getSelectedColors");
-const setSelectedColorsDB = functions.httpsCallable("setSelectedColors");
-
-const signOut = () => {
-  const auth = app.auth();
-  auth.signOut();
-};
-
-auth.onAuthStateChanged((user) => {
-  if (user != null) {
-    render_game(user);
-  } else {
-    ReactDOM.render(<></>, document.getElementById("root"));
-    authui.start("#root", uiConfig);
-  }
-});
+import {
+  signOut,
+  getSelectedColorsDB,
+  setSelectedColorsDB,
+  authui_config,
+  app,
+  auth,
+  authui,
+} from "./firebase";
 
 const render_game = async (user) => {
   const db_selected_colors = (await getSelectedColorsDB()).data;
@@ -91,7 +56,7 @@ const render_game = async (user) => {
 
   ReactDOM.render(
     <React.StrictMode>
-      <App
+      <Game
         db_selected_colors={db_selected_colors}
         db_available_colors={db_available_colors}
         profile_photo_url={profile_photo_url}
@@ -104,6 +69,16 @@ const render_game = async (user) => {
     document.getElementById("root")
   );
 };
+
+auth.onAuthStateChanged((user) => {
+  if (user != null) {
+    render_game(user);
+  } else {
+    ReactDOM.render(<></>, document.getElementById("root"));
+    authui.start("#root", authui_config);
+  }
+});
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
