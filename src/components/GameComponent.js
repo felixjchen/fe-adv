@@ -1,24 +1,18 @@
-import { React, useState } from "react";
-import Container from "@mui/material/Container";
-import { Box, Grid, Stack, Button } from "@mui/material";
+import { React, useState, useContext } from "react";
+import { Grid, Button, Container } from "@mui/material";
 import Player from "./PlayerComponent";
 import PlayerContext from "../contexts/PlayerContext";
+import IndexContext from "../contexts/IndexContext";
 
-const Game = (props) => {
-  let [profile_photo_url, set_profile_photo_url] = useState(
-    props.profile_photo_url
-  );
+const Game = () => {
+  let index_context = useContext(IndexContext);
+
   let [selected_colors, set_selected_colors] = useState(
-    props.db_selected_colors
+    index_context.db_selected_colors
   );
   let [available_colors, set_available_colors] = useState(
-    props.db_available_colors
+    index_context.db_available_colors
   );
-
-  const upload_profile_photo = async (file) => {
-    const new_profile_photo_url = await props.uploadProfilePhoto(file);
-    set_profile_photo_url(new_profile_photo_url);
-  };
 
   const select_color = (player, color) => {
     console.log(`${player} choose ${color}`);
@@ -33,7 +27,7 @@ const Game = (props) => {
     new_available_colors[color] = false;
     new_selected_colors[player] = color;
     set_available_colors(new_available_colors);
-    props.setSelectedColorsDB({ selected_colors: new_selected_colors });
+    index_context.setSelectedColorsDB({ selected_colors: new_selected_colors });
     set_selected_colors(new_selected_colors);
   };
 
@@ -46,32 +40,7 @@ const Game = (props) => {
           selected_colors,
         }}
       >
-        <Button
-          variant="contained"
-          onClick={props.signOut}
-          style={{ float: "right" }}
-        >
-          Sign Out
-        </Button>
-
         <Container fixed>
-          <Box>
-            <h1>Welcome {props.user_email} </h1>
-
-            <Container fixed>
-              <Stack style={{ maxWidth: "10rem", margin: "auto" }}>
-                <img src={profile_photo_url}></img>
-                <Button variant="contained" component="label">
-                  Upload Profile File
-                  <input
-                    type="file"
-                    onChange={(e) => upload_profile_photo(e.target.files[0])}
-                    hidden
-                  />
-                </Button>
-              </Stack>
-            </Container>
-          </Box>
           <Grid
             container
             rowSpacing={1}

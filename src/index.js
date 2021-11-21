@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Game from "./components/GameComponent";
 import reportWebVitals from "./reportWebVitals";
 import {
   signOut,
@@ -12,6 +11,10 @@ import {
   auth,
   authui,
 } from "./firebase";
+import IndexContext from "./contexts/IndexContext";
+import MyRoutes from "./routes/routes";
+import { BrowserRouter, Link, Outlet } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const render_game = async (user) => {
   const db_selected_colors = (await getSelectedColorsDB()).data;
@@ -54,17 +57,40 @@ const render_game = async (user) => {
     console.log(err);
   }
 
+  const IndexContextValue = {
+    db_selected_colors,
+    db_available_colors,
+    profile_photo_url,
+    user_email: user.email,
+    setSelectedColorsDB,
+    signOut,
+    uploadProfilePhoto,
+  };
   ReactDOM.render(
     <React.StrictMode>
-      <Game
-        db_selected_colors={db_selected_colors}
-        db_available_colors={db_available_colors}
-        profile_photo_url={profile_photo_url}
-        user_email={user.email}
-        setSelectedColorsDB={setSelectedColorsDB}
-        signOut={signOut}
-        uploadProfilePhoto={uploadProfilePhoto}
-      />
+      <IndexContext.Provider value={IndexContextValue}>
+        <BrowserRouter>
+          <nav
+            style={{
+              borderBottom: "solid 1px",
+              paddingBottom: "1rem",
+            }}
+          >
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+            <Link to="/game">Game</Link>
+            <Button
+              variant="contained"
+              onClick={signOut}
+              style={{ float: "right" }}
+            >
+              Sign Out
+            </Button>
+          </nav>
+          <Outlet />
+          <MyRoutes></MyRoutes>
+        </BrowserRouter>
+      </IndexContext.Provider>
     </React.StrictMode>,
     document.getElementById("root")
   );
